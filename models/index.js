@@ -13,15 +13,15 @@ const sequelize = new Sequelize(process.env.DATABASE_URL || 'postgresql://userna
 });
 
 // Import models
-const User = require('./User')(sequelize);
-const Project = require('./Project')(sequelize);
-const TestPlan = require('./TestPlan')(sequelize);
-const Requirement = require('./Requirement')(sequelize);
-const TestCase = require('./TestCase')(sequelize);
-const Defect = require('./Defect')(sequelize);
-const TestSuite = require('./TestSuite')(sequelize);
-const TestCaseExecution = require('./TestCaseExecution')(sequelize);
-const Report = require('./Report')(sequelize);
+const User = require('./userModel')(sequelize);
+const Project = require('./projectModel')(sequelize);
+const TestPlan = require('./testplanModel')(sequelize);
+const Requirement = require('./requirementModel')(sequelize);
+const TestCase = require('./testcaseModel')(sequelize);
+const Defect = require('./defectModel')(sequelize);
+const TestSuite = require('./testSuiteModel')(sequelize);
+const TestCaseExecution = require('./TestcaseExecutionModel')(sequelize);
+const Report = require('./reportModel')(sequelize);
 
 // Define associations
 const setupAssociations = () => {
