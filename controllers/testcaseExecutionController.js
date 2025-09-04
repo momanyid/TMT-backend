@@ -1,12 +1,12 @@
 const asyncHandler = require('express-async-handler');
-const { TestSuite, Project, User, TestCase, Defect } = require('../models/index.js');
+const { TestCaseExecution, Project, User, TestCase, Defect } = require('../models/index.js');
 
-// Get all test suites (optionally filter by project)
-const getTestSuites = asyncHandler(async (req, res) => {
+// Get all test case executions (optionally filter by project)
+const getTestCaseExecutions = asyncHandler(async (req, res) => {
   const { project_id } = req.query;
   const filter = project_id ? { projectId: project_id } : {};
   
-  const suites = await TestSuite.findAll({
+  const executions = await TestCaseExecution.findAll({
     where: filter,
     include: [
       { model: Project, as: 'project', attributes: ['id', 'projectName'] },
@@ -21,12 +21,12 @@ const getTestSuites = asyncHandler(async (req, res) => {
     ]
   });
   
-  res.json(suites);
+  res.json(executions);
 });
 
-// Get a single test suite
-const getTestSuite = asyncHandler(async (req, res) => {
-  const suite = await TestSuite.findByPk(req.params.id, {
+// Get a single test case execution
+const getTestCaseExecution = asyncHandler(async (req, res) => {
+  const execution = await TestCaseExecution.findByPk(req.params.id, {
     include: [
       { model: Project, as: 'project', attributes: ['id', 'projectName'] },
       { model: User, as: 'assignee', attributes: ['id', 'username', 'email'] },
@@ -40,25 +40,27 @@ const getTestSuite = asyncHandler(async (req, res) => {
     ]
   });
   
-  if (!suite) {
+  if (!execution) {
     res.status(404);
-    throw new Error('Test suite not found');
+    throw new Error('Test case execution not found');
   }
   
-  res.json(suite);
+  res.json(execution);
 });
 
-// Create a new test suite
-const createTestSuite = asyncHandler(async (req, res) => {
+// Create a new test case execution
+const createTestCaseExecution = asyncHandler(async (req, res) => {
   const { 
     testSuiteName, 
     projectId, 
+    status, 
     startDate, 
     endDate, 
     bugId, 
     executedBy, 
     executedDate, 
     assignedToUserId, 
+    remarks, 
     testCaseIds
   } = req.body;
   
@@ -85,21 +87,23 @@ const createTestSuite = asyncHandler(async (req, res) => {
     throw new Error('One or more test cases not found');
   }
   
-  const suite = await TestSuite.create({
+  const execution = await TestCaseExecution.create({
     testSuiteName,
     projectId,
+    status,
     startDate,
     endDate,
     bugId,
     executedBy,
     executedDate,
-    assignedToUserId
+    assignedToUserId,
+    remarks
   });
   
-  // Associate test cases with the test suite using the junction table
-  await suite.setTestCases(testCaseIds);
+  // Associate test cases with the test case execution using the junction table
+  await execution.setTestCases(testCaseIds);
   
-  const createdSuite = await TestSuite.findByPk(suite.id, {
+  const createdExecution = await TestCaseExecution.findByPk(execution.id, {
     include: [
       { model: Project, as: 'project', attributes: ['id', 'projectName'] },
       { model: User, as: 'assignee', attributes: ['id', 'username', 'email'] },
@@ -113,22 +117,22 @@ const createTestSuite = asyncHandler(async (req, res) => {
     ]
   });
   
-  res.status(201).json(createdSuite);
+  res.status(201).json(createdExecution);
 });
 
-// Update a test suite
-const updateTestSuite = asyncHandler(async (req, res) => {
-  const suite = await TestSuite.findByPk(req.params.id);
+// Update a test case execution
+const updateTestCaseExecution = asyncHandler(async (req, res) => {
+  const execution = await TestCaseExecution.findByPk(req.params.id);
   
-  if (!suite) {
+  if (!execution) {
     res.status(404);
-    throw new Error('Test suite not found');
+    throw new Error('Test case execution not found');
   }
   
   const { testCaseIds, ...updateData } = req.body;
   
-  // Update the suite data
-  await suite.update(updateData);
+  // Update the execution data
+  await execution.update(updateData);
   
   // Update test case associations if provided
   if (testCaseIds && Array.isArray(testCaseIds)) {
@@ -143,10 +147,10 @@ const updateTestSuite = asyncHandler(async (req, res) => {
       throw new Error('One or more test cases not found');
     }
     
-    await suite.setTestCases(testCaseIds);
+    await execution.setTestCases(testCaseIds);
   }
   
-  const updated = await TestSuite.findByPk(req.params.id, {
+  const updated = await TestCaseExecution.findByPk(req.params.id, {
     include: [
       { model: Project, as: 'project', attributes: ['id', 'projectName'] },
       { model: User, as: 'assignee', attributes: ['id', 'username', 'email'] },
@@ -163,23 +167,23 @@ const updateTestSuite = asyncHandler(async (req, res) => {
   res.json(updated);
 });
 
-// Delete a test suite
-const deleteTestSuite = asyncHandler(async (req, res) => {
-  const suite = await TestSuite.findByPk(req.params.id);
+// Delete a test case execution
+const deleteTestCaseExecution = asyncHandler(async (req, res) => {
+  const execution = await TestCaseExecution.findByPk(req.params.id);
   
-  if (!suite) {
+  if (!execution) {
     res.status(404);
-    throw new Error('Test suite not found');
+    throw new Error('Test case execution not found');
   }
   
-  await suite.destroy();
-  res.json({ message: 'Test suite deleted' });
+  await execution.destroy();
+  res.json({ message: 'Test case execution deleted' });
 });
 
 module.exports = {
-  getTestSuites,
-  getTestSuite,
-  createTestSuite,
-  updateTestSuite,
-  deleteTestSuite
+  getTestCaseExecutions,
+  getTestCaseExecution,
+  createTestCaseExecution,
+  updateTestCaseExecution,
+  deleteTestCaseExecution
 };

@@ -1,10 +1,12 @@
 import express from 'express';
 import dotenv from 'dotenv';
+import cookieParser from 'cookie-parser';
 
 dotenv.config();
 
 import sequelize from './config/db.config.js';
 
+import routes from './routes/index.js';
 
 // Express setup
 const PORT = process.env.PORT || 5000;
@@ -12,7 +14,10 @@ const NODE_ENV = process.env.NODE_ENV || 'development';
 
 const app = express();
 app.use(express.json());
+app.use(cookieParser());
 
+//routes
+app.use("/api", routes);
 
 // Health check route
 app.get('/', (req, res) => {

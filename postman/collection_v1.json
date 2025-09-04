@@ -1,0 +1,1368 @@
+{
+	"info": {
+		"_postman_id": "test-management-system-api",
+		"name": "Kiwami Testcloud APIs",
+		"description": "Comprehensive API collection for Test Management System with authentication, projects, test plans, test cases, defects, and more.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Signup",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"firstName\": \"John\",\n  \"lastName\": \"Doe\",\n  \"username\": \"johndoe\",\n  \"email\": \"john.doe@example.com\",\n  \"password\": \"securePassword123\",\n  \"phoneNumber\": \"+1234567890\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/auth/signup",
+							"host": ["{{base_url}}"],
+							"path": ["api", "auth", "signup"]
+						}
+					}
+				},
+				{
+					"name": "Verify Email",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"code\": \"123456\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/auth/verify-email",
+							"host": ["{{base_url}}"],
+							"path": ["api", "auth", "verify-email"]
+						}
+					}
+				},
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"john.doe@example.com\",\n  \"password\": \"securePassword123\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/auth/login",
+							"host": ["{{base_url}}"],
+							"path": ["api", "auth", "login"]
+						}
+					}
+				},
+				{
+					"name": "Logout",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/auth/logout",
+							"host": ["{{base_url}}"],
+							"path": ["api", "auth", "logout"]
+						}
+					}
+				},
+				{
+					"name": "Forgot Password",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"john.doe@example.com\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/auth/forgot-password",
+							"host": ["{{base_url}}"],
+							"path": ["api", "auth", "forgot-password"]
+						}
+					}
+				},
+				{
+					"name": "Reset Password",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"password\": \"newSecurePassword123\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/auth/reset-password/:token",
+							"host": ["{{base_url}}"],
+							"path": ["api", "auth", "reset-password", ":token"],
+							"variable": [
+								{
+									"key": "token",
+									"value": "reset_token_here"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Check Auth",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/auth/check-auth",
+							"host": ["{{base_url}}"],
+							"path": ["api", "auth", "check-auth"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "Get All Users (Admin Only)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/users",
+							"host": ["{{base_url}}"],
+							"path": ["api", "users"]
+						}
+					}
+				},
+				{
+					"name": "Get User by ID (Admin Only)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/users/:id",
+							"host": ["{{base_url}}"],
+							"path": ["api", "users", ":id"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "user_uuid_here"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Update User Role (Admin Only)",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"role\": \"Lead\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/users/:id/role",
+							"host": ["{{base_url}}"],
+							"path": ["api", "users", ":id", "role"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "user_uuid_here"
+								}
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Projects",
+			"item": [
+				{
+					"name": "Create Project",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"projectName\": \"E-Commerce Platform\",\n  \"startDate\": \"2024-01-15\",\n  \"endDate\": \"2024-06-30\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/projects",
+							"host": ["{{base_url}}"],
+							"path": ["api", "projects"]
+						}
+					}
+				},
+				{
+					"name": "Get All Projects",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/projects",
+							"host": ["{{base_url}}"],
+							"path": ["api", "projects"]
+						}
+					}
+				},
+				{
+					"name": "Get Project by ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/projects/:id",
+							"host": ["{{base_url}}"],
+							"path": ["api", "projects", ":id"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "project_uuid_here"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Update Project",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"projectName\": \"E-Commerce Platform v2\",\n  \"startDate\": \"2024-01-15\",\n  \"endDate\": \"2024-08-30\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/projects/:id",
+							"host": ["{{base_url}}"],
+							"path": ["api", "projects", ":id"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "project_uuid_here"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Delete Project",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/projects/:id",
+							"host": ["{{base_url}}"],
+							"path": ["api", "projects", ":id"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "project_uuid_here"
+								}
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Test Plans",
+			"item": [
+				{
+					"name": "Create Test Plan",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"User Authentication Test Plan\",\n  \"description\": \"Comprehensive testing plan for user authentication features\",\n  \"projectId\": \"project_uuid_here\",\n  \"link\": \"https://docs.company.com/testplan-auth\",\n  \"startDate\": \"2024-02-01\",\n  \"endDate\": \"2024-02-28\",\n  \"status\": \"Draft\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/testplans",
+							"host": ["{{base_url}}"],
+							"path": ["api", "testplans"]
+						}
+					}
+				},
+				{
+					"name": "Get All Test Plans",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/testplans",
+							"host": ["{{base_url}}"],
+							"path": ["api", "testplans"]
+						}
+					}
+				},
+				{
+					"name": "Get Test Plans by Project",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/testplans?project={{project_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["api", "testplans"],
+							"query": [
+								{
+									"key": "project",
+									"value": "{{project_id}}"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Test Plan by ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/testplans/:id",
+							"host": ["{{base_url}}"],
+							"path": ["api", "testplans", ":id"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "testplan_uuid_here"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Update Test Plan",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"Updated User Authentication Test Plan\",\n  \"description\": \"Updated comprehensive testing plan for user authentication features\",\n  \"projectId\": \"project_uuid_here\",\n  \"link\": \"https://docs.company.com/testplan-auth-v2\",\n  \"startDate\": \"2024-02-01\",\n  \"endDate\": \"2024-03-15\",\n  \"status\": \"In Progress\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/testplans/:id",
+							"host": ["{{base_url}}"],
+							"path": ["api", "testplans", ":id"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "testplan_uuid_here"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Delete Test Plan",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/testplans/:id",
+							"host": ["{{base_url}}"],
+							"path": ["api", "testplans", ":id"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "testplan_uuid_here"
+								}
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Requirements (RTM)",
+			"item": [
+				{
+					"name": "Create Requirement",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"reqId\": \"REQ-001\",\n  \"description\": \"User should be able to login with valid credentials\",\n  \"testPlanId\": \"testplan_uuid_here\",\n  \"mainFeature\": \"Authentication\",\n  \"featureSubsection\": \"Login\",\n  \"remarks\": \"Critical functionality\",\n  \"status\": \"Active\",\n  \"testStatus\": \"Pass\",\n  \"testcaseIds\": \"TC-001, TC-002\",\n  \"actions\": \"Ready for testing\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/requirements",
+							"host": ["{{base_url}}"],
+							"path": ["api", "requirements"]
+						}
+					}
+				},
+				{
+					"name": "Get All Requirements",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/requirements",
+							"host": ["{{base_url}}"],
+							"path": ["api", "requirements"]
+						}
+					}
+				},
+				{
+					"name": "Get Requirements by Test Plan",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/requirements/testplan/:testPlanId",
+							"host": ["{{base_url}}"],
+							"path": ["api", "requirements", "testplan", ":testPlanId"],
+							"variable": [
+								{
+									"key": "testPlanId",
+									"value": "testplan_uuid_here"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Requirement by ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/requirements/:id",
+							"host": ["{{base_url}}"],
+							"path": ["api", "requirements", ":id"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "requirement_uuid_here"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Update Requirement",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"reqId\": \"REQ-001\",\n  \"description\": \"Updated: User should be able to login with valid credentials and receive proper feedback\",\n  \"testPlanId\": \"testplan_uuid_here\",\n  \"mainFeature\": \"Authentication\",\n  \"featureSubsection\": \"Login\",\n  \"remarks\": \"Critical functionality - updated requirements\",\n  \"status\": \"Active\",\n  \"testStatus\": \"Pass\",\n  \"testcaseIds\": \"TC-001, TC-002, TC-003\",\n  \"actions\": \"Ready for testing\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/requirements/:id",
+							"host": ["{{base_url}}"],
+							"path": ["api", "requirements", ":id"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "requirement_uuid_here"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Delete Requirement",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/requirements/:id",
+							"host": ["{{base_url}}"],
+							"path": ["api", "requirements", ":id"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "requirement_uuid_here"
+								}
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Test Cases",
+			"item": [
+				{
+					"name": "Create Test Case",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"testPlanId\": \"testplan_uuid_here\",\n  \"requirementId\": \"requirement_uuid_here\",\n  \"title\": \"Test user login with valid credentials\",\n  \"preconditions\": \"User has valid account and application is accessible\",\n  \"testSteps\": \"1. Navigate to login page\\n2. Enter valid username\\n3. Enter valid password\\n4. Click login button\",\n  \"testData\": \"Username: testuser@example.com, Password: validPassword123\",\n  \"testSuite\": \"Authentication Tests\",\n  \"expectedResults\": \"User should be successfully logged in and redirected to dashboard\",\n  \"actualResults\": \"\",\n  \"status\": \"Not Executed\",\n  \"testType\": \"Manual\",\n  \"executedByUserId\": null,\n  \"executionDate\": null,\n  \"remarks\": \"Critical test case for user authentication\",\n  \"writtenByUserId\": \"writer_user_uuid_here\",\n  \"linkToTestplan\": \"https://docs.company.com/testplan-auth\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/testcases",
+							"host": ["{{base_url}}"],
+							"path": ["api", "testcases"]
+						}
+					}
+				},
+				{
+					"name": "Get All Test Cases",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/testcases",
+							"host": ["{{base_url}}"],
+							"path": ["api", "testcases"]
+						}
+					}
+				},
+				{
+					"name": "Get Test Cases by Test Plan",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/testcases?test_plan_id={{testplan_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["api", "testcases"],
+							"query": [
+								{
+									"key": "test_plan_id",
+									"value": "{{testplan_id}}"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Test Cases by Requirement",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/testcases?requirement_id={{requirement_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["api", "testcases"],
+							"query": [
+								{
+									"key": "requirement_id",
+									"value": "{{requirement_id}}"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Test Case by ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/testcases/:id",
+							"host": ["{{base_url}}"],
+							"path": ["api", "testcases", ":id"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "testcase_uuid_here"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Update Test Case",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"testPlanId\": \"testplan_uuid_here\",\n  \"requirementId\": \"requirement_uuid_here\",\n  \"title\": \"Updated: Test user login with valid credentials\",\n  \"preconditions\": \"User has valid account and application is accessible\",\n  \"testSteps\": \"1. Navigate to login page\\n2. Enter valid username\\n3. Enter valid password\\n4. Click login button\\n5. Verify redirect\",\n  \"testData\": \"Username: testuser@example.com, Password: validPassword123\",\n  \"testSuite\": \"Authentication Tests\",\n  \"expectedResults\": \"User should be successfully logged in and redirected to dashboard with welcome message\",\n  \"actualResults\": \"Test passed - user logged in successfully\",\n  \"status\": \"Passed\",\n  \"testType\": \"Manual\",\n  \"executedByUserId\": \"executor_user_uuid_here\",\n  \"executionDate\": \"2024-02-15T10:30:00Z\",\n  \"remarks\": \"Critical test case for user authentication - executed successfully\",\n  \"writtenByUserId\": \"writer_user_uuid_here\",\n  \"linkToTestplan\": \"https://docs.company.com/testplan-auth\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/testcases/:id",
+							"host": ["{{base_url}}"],
+							"path": ["api", "testcases", ":id"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "testcase_uuid_here"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Delete Test Case",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/testcases/:id",
+							"host": ["{{base_url}}"],
+							"path": ["api", "testcases", ":id"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "testcase_uuid_here"
+								}
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Defects",
+			"item": [
+				{
+					"name": "Create Defect",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"testCaseId\": \"testcase_uuid_here\",\n  \"title\": \"Login button not responding on mobile devices\",\n  \"description\": \"When testing on mobile devices, the login button does not respond to touch events consistently\",\n  \"status\": \"Open\",\n  \"priority\": \"High\",\n  \"severity\": \"Major\",\n  \"stepsToReproduce\": \"1. Open app on mobile device\\n2. Navigate to login screen\\n3. Enter valid credentials\\n4. Tap login button\\n5. Observe button not responding\",\n  \"expectedResult\": \"Login button should respond immediately and process login\",\n  \"actualResult\": \"Login button appears unresponsive, requires multiple taps\",\n  \"attachments\": \"screenshot1.png, video_recording.mp4\",\n  \"environment\": \"iOS 15.0, iPhone 12 Pro, Safari Mobile\",\n  \"assignedToUserId\": \"developer_uuid_here\",\n  \"remarks\": \"Issue affects user experience significantly\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/defects",
+							"host": ["{{base_url}}"],
+							"path": ["api", "defects"]
+						}
+					}
+				},
+				{
+					"name": "Get All Defects",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/defects",
+							"host": ["{{base_url}}"],
+							"path": ["api", "defects"]
+						}
+					}
+				},
+				{
+					"name": "Get Defects by Test Case",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/defects?test_case_id={{testcase_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["api", "defects"],
+							"query": [
+								{
+									"key": "test_case_id",
+									"value": "{{testcase_id}}"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Defect by ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/defects/:id",
+							"host": ["{{base_url}}"],
+							"path": ["api", "defects", ":id"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "defect_uuid_here"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Update Defect",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"testCaseId\": \"testcase_uuid_here\",\n  \"title\": \"Updated: Login button not responding on mobile devices\",\n  \"description\": \"Updated: When testing on mobile devices, the login button does not respond to touch events consistently. Issue confirmed across multiple devices.\",\n  \"status\": \"In Progress\",\n  \"priority\": \"High\",\n  \"severity\": \"Major\",\n  \"stepsToReproduce\": \"1. Open app on mobile device\\n2. Navigate to login screen\\n3. Enter valid credentials\\n4. Tap login button\\n5. Observe button not responding\",\n  \"expectedResult\": \"Login button should respond immediately and process login\",\n  \"actualResult\": \"Login button appears unresponsive, requires multiple taps\",\n  \"attachments\": \"screenshot1.png, video_recording.mp4, additional_testing.png\",\n  \"environment\": \"iOS 15.0, iPhone 12 Pro, Safari Mobile; Android 12, Samsung Galaxy S21\",\n  \"assignedToUserId\": \"developer_uuid_here\",\n  \"remarks\": \"Issue affects user experience significantly. Developer investigating touch event handling.\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/defects/:id",
+							"host": ["{{base_url}}"],
+							"path": ["api", "defects", ":id"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "defect_uuid_here"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Update Defect Status",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"status\": \"Fixed\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/defects/:id/status",
+							"host": ["{{base_url}}"],
+							"path": ["api", "defects", ":id", "status"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "defect_uuid_here"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Delete Defect",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/defects/:id",
+							"host": ["{{base_url}}"],
+							"path": ["api", "defects", ":id"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "defect_uuid_here"
+								}
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Test Suites",
+			"item": [
+				{
+					"name": "Create Test Suite",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"testSuiteName\": \"Authentication Test Suite\",\n  \"projectId\": \"project_uuid_here\",\n  \"startDate\": \"2024-02-01\",\n  \"endDate\": \"2024-02-15\",\n  \"bugId\": null,\n  \"executedBy\": \"John Doe\",\n  \"executedDate\": \"2024-02-10\",\n  \"assignedToUserId\": \"tester_uuid_here\",\n  \"testCaseIds\": [\"testcase_uuid_1\", \"testcase_uuid_2\", \"testcase_uuid_3\"]\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/testsuites",
+							"host": ["{{base_url}}"],
+							"path": ["api", "testsuites"]
+						}
+					}
+				},
+				{
+					"name": "Get All Test Suites",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/testsuites",
+							"host": ["{{base_url}}"],
+							"path": ["api", "testsuites"]
+						}
+					}
+				},
+				{
+					"name": "Get Test Suites by Project",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/testsuites?project_id={{project_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["api", "testsuites"],
+							"query": [
+								{
+									"key": "project_id",
+									"value": "{{project_id}}"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Test Suite by ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/testsuites/:id",
+							"host": ["{{base_url}}"],
+							"path": ["api", "testsuites", ":id"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "testsuite_uuid_here"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Update Test Suite",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"testSuiteName\": \"Updated Authentication Test Suite\",\n  \"projectId\": \"project_uuid_here\",\n  \"startDate\": \"2024-02-01\",\n  \"endDate\": \"2024-02-20\",\n  \"bugId\": \"defect_uuid_here\",\n  \"executedBy\": \"Jane Smith\",\n  \"executedDate\": \"2024-02-15\",\n  \"assignedToUserId\": \"tester_uuid_here\",\n  \"testCaseIds\": [\"testcase_uuid_1\", \"testcase_uuid_2\", \"testcase_uuid_3\", \"testcase_uuid_4\"]\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/testsuites/:id",
+							"host": ["{{base_url}}"],
+							"path": ["api", "testsuites", ":id"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "testsuite_uuid_here"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Delete Test Suite",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/testsuites/:id",
+							"host": ["{{base_url}}"],
+							"path": ["api", "testsuites", ":id"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "testsuite_uuid_here"
+								}
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Test Case Executions",
+			"item": [
+				{
+					"name": "Create Test Case Execution",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"testSuiteName\": \"Sprint 1 Execution\",\n  \"projectId\": \"project_uuid_here\",\n  \"status\": \"In Progress\",\n  \"startDate\": \"2024-02-01\",\n  \"endDate\": \"2024-02-28\",\n  \"bugId\": null,\n  \"executedBy\": \"Test Team Lead\",\n  \"executedDate\": \"2024-02-15\",\n  \"assignedToUserId\": \"lead_tester_uuid_here\",\n  \"remarks\": \"Initial sprint execution for authentication features\",\n  \"testCaseIds\": [\"testcase_uuid_1\", \"testcase_uuid_2\", \"testcase_uuid_3\"]\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/testcase-executions",
+							"host": ["{{base_url}}"],
+							"path": ["api", "testcase-executions"]
+						}
+					}
+				},
+				{
+					"name": "Get All Test Case Executions",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/testcase-executions",
+							"host": ["{{base_url}}"],
+							"path": ["api", "testcase-executions"]
+						}
+					}
+				},
+				{
+					"name": "Get Test Case Executions by Project",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/testcase-executions?project_id={{project_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["api", "testcase-executions"],
+							"query": [
+								{
+									"key": "project_id",
+									"value": "{{project_id}}"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Test Case Execution by ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/testcase-executions/:id",
+							"host": ["{{base_url}}"],
+							"path": ["api", "testcase-executions", ":id"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "execution_uuid_here"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Update Test Case Execution",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"testSuiteName\": \"Sprint 1 Execution - Updated\",\n  \"projectId\": \"project_uuid_here\",\n  \"status\": \"Completed\",\n  \"startDate\": \"2024-02-01\",\n  \"endDate\": \"2024-02-25\",\n  \"bugId\": \"defect_uuid_here\",\n  \"executedBy\": \"Test Team Lead\",\n  \"executedDate\": \"2024-02-25\",\n  \"assignedToUserId\": \"lead_tester_uuid_here\",\n  \"remarks\": \"Sprint execution completed with one defect found\",\n  \"testCaseIds\": [\"testcase_uuid_1\", \"testcase_uuid_2\", \"testcase_uuid_3\", \"testcase_uuid_4\"]\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/testcase-executions/:id",
+							"host": ["{{base_url}}"],
+							"path": ["api", "testcase-executions", ":id"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "execution_uuid_here"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Delete Test Case Execution",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/testcase-executions/:id",
+							"host": ["{{base_url}}"],
+							"path": ["api", "testcase-executions", ":id"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "execution_uuid_here"
+								}
+							]
+						}
+					}
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:5000",
+			"type": "string"
+		},
+		{
+			"key": "auth_token",
+			"value": "",
+			"type": "string",
+			"description": "JWT token obtained from login - will be set automatically after successful login"
+		},
+		{
+			"key": "project_id",
+			"value": "",
+			"type": "string",
+			"description": "UUID of a project for filtering"
+		},
+		{
+			"key": "testplan_id",
+			"value": "",
+			"type": "string",
+			"description": "UUID of a test plan for filtering"
+		},
+		{
+			"key": "requirement_id",
+			"value": "",
+			"type": "string",
+			"description": "UUID of a requirement for filtering"
+		},
+		{
+			"key": "testcase_id",
+			"value": "",
+			"type": "string",
+			"description": "UUID of a test case for filtering"
+		}
+	],
+	"event": [
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"// Auto-capture auth token from login response",
+					"if (pm.info.requestName === 'Login') {",
+					"    if (pm.response.code === 200) {",
+					"        var jsonData = pm.response.json();",
+					"        if (jsonData.success && jsonData.user) {",
+					"            // Note: Token is typically set as httpOnly cookie",
+					"            // If your API returns token in response, uncomment below:",
+					"            // pm.collectionVariables.set('auth_token', jsonData.token);",
+					"            console.log('Login successful for user: ' + jsonData.user.email);",
+					"        }",
+					"    }",
+					"}",
+					"",
+					"// Auto-capture IDs from creation responses",
+					"if (pm.response.code === 201) {",
+					"    var jsonData = pm.response.json();",
+					"    if (jsonData.id) {",
+					"        var requestName = pm.info.requestName;",
+					"        if (requestName.includes('Project')) {",
+					"            pm.collectionVariables.set('project_id', jsonData.id);",
+					"        } else if (requestName.includes('Test Plan')) {",
+					"            pm.collectionVariables.set('testplan_id', jsonData.id);",
+					"        } else if (requestName.includes('Requirement')) {",
+					"            pm.collectionVariables.set('requirement_id', jsonData.id);",
+					"        } else if (requestName.includes('Test Case')) {",
+					"            pm.collectionVariables.set('testcase_id', jsonData.id);",
+					"        }",
+					"        console.log('Created resource with ID: ' + jsonData.id);",
+					"    }",
+					"}"
+				]
+			}
+		}
+	]
+}
