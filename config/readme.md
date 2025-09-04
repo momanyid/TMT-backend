@@ -63,3 +63,7 @@ psql -U your_username -d your_database -c "path/to/the/file/postgresql_schema.sq
 ```
 
 And Everything should be good to go
+
+# Database Schema and relationships
+
+<img src='./database_diagram.svg' placeholder='database relationships image' />
