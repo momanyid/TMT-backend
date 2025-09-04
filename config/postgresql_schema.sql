@@ -1,11 +1,20 @@
--- PostgreSQL Database Schema for Test Management System
-
--- Create extensions for UUID support
-CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+-- PostgreSQL Database Schema
+-- Updated since cpanel postgres does not allow UUID extension
 
 -- Users table
 CREATE TABLE users (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id VARCHAR(36) PRIMARY KEY DEFAULT (
+        UPPER(CONCAT(
+            LPAD(TO_HEX((RANDOM() * 65535)::INT), 4, '0'),
+            LPAD(TO_HEX((RANDOM() * 65535)::INT), 4, '0'), '-',
+            LPAD(TO_HEX((RANDOM() * 65535)::INT), 4, '0'), '-',
+            LPAD(TO_HEX(((RANDOM() * 65535)::INT | 16384) & 20479), 4, '0'), '-',
+            LPAD(TO_HEX(((RANDOM() * 65535)::INT | 32768) & 49151), 4, '0'), '-',
+            LPAD(TO_HEX((RANDOM() * 65535)::INT), 4, '0'),
+            LPAD(TO_HEX((RANDOM() * 65535)::INT), 4, '0'),
+            LPAD(TO_HEX((RANDOM() * 65535)::INT), 4, '0')
+        ))
+    ),
     username VARCHAR(255) NOT NULL UNIQUE,
     first_name VARCHAR(30) NOT NULL UNIQUE,
     last_name VARCHAR(30) NOT NULL UNIQUE,
@@ -24,7 +33,18 @@ CREATE TABLE users (
 
 -- Projects table
 CREATE TABLE projects (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id VARCHAR(36) PRIMARY KEY DEFAULT (
+        UPPER(CONCAT(
+            LPAD(TO_HEX((RANDOM() * 65535)::INT), 4, '0'),
+            LPAD(TO_HEX((RANDOM() * 65535)::INT), 4, '0'), '-',
+            LPAD(TO_HEX((RANDOM() * 65535)::INT), 4, '0'), '-',
+            LPAD(TO_HEX(((RANDOM() * 65535)::INT | 16384) & 20479), 4, '0'), '-',
+            LPAD(TO_HEX(((RANDOM() * 65535)::INT | 32768) & 49151), 4, '0'), '-',
+            LPAD(TO_HEX((RANDOM() * 65535)::INT), 4, '0'),
+            LPAD(TO_HEX((RANDOM() * 65535)::INT), 4, '0'),
+            LPAD(TO_HEX((RANDOM() * 65535)::INT), 4, '0')
+        ))
+    ),
     project_name VARCHAR(255) NOT NULL,
     start_date DATE,
     end_date DATE,
@@ -34,25 +54,47 @@ CREATE TABLE projects (
 
 -- Test Plans table
 CREATE TABLE test_plans (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id VARCHAR(36) PRIMARY KEY DEFAULT (
+        UPPER(CONCAT(
+            LPAD(TO_HEX((RANDOM() * 65535)::INT), 4, '0'),
+            LPAD(TO_HEX((RANDOM() * 65535)::INT), 4, '0'), '-',
+            LPAD(TO_HEX((RANDOM() * 65535)::INT), 4, '0'), '-',
+            LPAD(TO_HEX(((RANDOM() * 65535)::INT | 16384) & 20479), 4, '0'), '-',
+            LPAD(TO_HEX(((RANDOM() * 65535)::INT | 32768) & 49151), 4, '0'), '-',
+            LPAD(TO_HEX((RANDOM() * 65535)::INT), 4, '0'),
+            LPAD(TO_HEX((RANDOM() * 65535)::INT), 4, '0'),
+            LPAD(TO_HEX((RANDOM() * 65535)::INT), 4, '0')
+        ))
+    ),
     title VARCHAR(255) NOT NULL,
     description TEXT,
-    project_id UUID NOT NULL REFERENCES projects(id) ON DELETE CASCADE,
+    project_id VARCHAR(36) NOT NULL REFERENCES projects(id) ON DELETE CASCADE,
     link VARCHAR(500) NOT NULL,
     start_date DATE,
     end_date DATE,
     status VARCHAR(20) CHECK (status IN ('Draft', 'In Progress', 'Completed')) DEFAULT 'Draft',
-    uploaded_by UUID NOT NULL REFERENCES users(id),
+    uploaded_by VARCHAR(36) NOT NULL REFERENCES users(id),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 -- Requirements table
 CREATE TABLE requirements (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id VARCHAR(36) PRIMARY KEY DEFAULT (
+        UPPER(CONCAT(
+            LPAD(TO_HEX((RANDOM() * 65535)::INT), 4, '0'),
+            LPAD(TO_HEX((RANDOM() * 65535)::INT), 4, '0'), '-',
+            LPAD(TO_HEX((RANDOM() * 65535)::INT), 4, '0'), '-',
+            LPAD(TO_HEX(((RANDOM() * 65535)::INT | 16384) & 20479), 4, '0'), '-',
+            LPAD(TO_HEX(((RANDOM() * 65535)::INT | 32768) & 49151), 4, '0'), '-',
+            LPAD(TO_HEX((RANDOM() * 65535)::INT), 4, '0'),
+            LPAD(TO_HEX((RANDOM() * 65535)::INT), 4, '0'),
+            LPAD(TO_HEX((RANDOM() * 65535)::INT), 4, '0')
+        ))
+    ),
     req_id VARCHAR(100) NOT NULL UNIQUE,
     description TEXT NOT NULL,
-    test_plan_id UUID NOT NULL REFERENCES test_plans(id) ON DELETE CASCADE,
+    test_plan_id VARCHAR(36) NOT NULL REFERENCES test_plans(id) ON DELETE CASCADE,
     main_feature VARCHAR(255),
     feature_subsection VARCHAR(255),
     remarks TEXT,
@@ -66,10 +108,21 @@ CREATE TABLE requirements (
 
 -- Test Cases table
 CREATE TABLE test_cases (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id VARCHAR(36) PRIMARY KEY DEFAULT (
+        UPPER(CONCAT(
+            LPAD(TO_HEX((RANDOM() * 65535)::INT), 4, '0'),
+            LPAD(TO_HEX((RANDOM() * 65535)::INT), 4, '0'), '-',
+            LPAD(TO_HEX((RANDOM() * 65535)::INT), 4, '0'), '-',
+            LPAD(TO_HEX(((RANDOM() * 65535)::INT | 16384) & 20479), 4, '0'), '-',
+            LPAD(TO_HEX(((RANDOM() * 65535)::INT | 32768) & 49151), 4, '0'), '-',
+            LPAD(TO_HEX((RANDOM() * 65535)::INT), 4, '0'),
+            LPAD(TO_HEX((RANDOM() * 65535)::INT), 4, '0'),
+            LPAD(TO_HEX((RANDOM() * 65535)::INT), 4, '0')
+        ))
+    ),
     test_case_id VARCHAR(50) UNIQUE,
-    test_plan_id UUID NOT NULL REFERENCES test_plans(id) ON DELETE CASCADE,
-    requirement_id UUID REFERENCES requirements(id),
+    test_plan_id VARCHAR(36) NOT NULL REFERENCES test_plans(id) ON DELETE CASCADE,
+    requirement_id VARCHAR(36) REFERENCES requirements(id),
     title VARCHAR(500) NOT NULL,
     preconditions TEXT,
     test_steps TEXT,
@@ -79,10 +132,10 @@ CREATE TABLE test_cases (
     actual_results TEXT,
     status VARCHAR(50),
     test_type VARCHAR(20) CHECK (test_type IN ('Manual', 'Automated', 'Performance')) DEFAULT 'Manual',
-    executed_by_user_id UUID REFERENCES users(id),
+    executed_by_user_id VARCHAR(36) REFERENCES users(id),
     execution_date TIMESTAMP,
     remarks TEXT,
-    written_by_user_id UUID REFERENCES users(id),
+    written_by_user_id VARCHAR(36) REFERENCES users(id),
     link_to_testplan VARCHAR(500),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -90,9 +143,20 @@ CREATE TABLE test_cases (
 
 -- Defects table
 CREATE TABLE defects (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id VARCHAR(36) PRIMARY KEY DEFAULT (
+        UPPER(CONCAT(
+            LPAD(TO_HEX((RANDOM() * 65535)::INT), 4, '0'),
+            LPAD(TO_HEX((RANDOM() * 65535)::INT), 4, '0'), '-',
+            LPAD(TO_HEX((RANDOM() * 65535)::INT), 4, '0'), '-',
+            LPAD(TO_HEX(((RANDOM() * 65535)::INT | 16384) & 20479), 4, '0'), '-',
+            LPAD(TO_HEX(((RANDOM() * 65535)::INT | 32768) & 49151), 4, '0'), '-',
+            LPAD(TO_HEX((RANDOM() * 65535)::INT), 4, '0'),
+            LPAD(TO_HEX((RANDOM() * 65535)::INT), 4, '0'),
+            LPAD(TO_HEX((RANDOM() * 65535)::INT), 4, '0')
+        ))
+    ),
     defect_id VARCHAR(50) UNIQUE,
-    test_case_id UUID NOT NULL REFERENCES test_cases(id) ON DELETE CASCADE,
+    test_case_id VARCHAR(36) NOT NULL REFERENCES test_cases(id) ON DELETE CASCADE,
     title VARCHAR(500) NOT NULL,
     description TEXT NOT NULL,
     status VARCHAR(50),
@@ -103,8 +167,8 @@ CREATE TABLE defects (
     actual_result TEXT,
     attachments TEXT,
     environment VARCHAR(255),
-    assigned_to_user_id UUID REFERENCES users(id),
-    reported_by_user_id UUID NOT NULL REFERENCES users(id),
+    assigned_to_user_id VARCHAR(36) REFERENCES users(id),
+    reported_by_user_id VARCHAR(36) NOT NULL REFERENCES users(id),
     date_reported TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     remarks TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -113,31 +177,53 @@ CREATE TABLE defects (
 
 -- Test Suites table
 CREATE TABLE test_suites (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id VARCHAR(36) PRIMARY KEY DEFAULT (
+        UPPER(CONCAT(
+            LPAD(TO_HEX((RANDOM() * 65535)::INT), 4, '0'),
+            LPAD(TO_HEX((RANDOM() * 65535)::INT), 4, '0'), '-',
+            LPAD(TO_HEX((RANDOM() * 65535)::INT), 4, '0'), '-',
+            LPAD(TO_HEX(((RANDOM() * 65535)::INT | 16384) & 20479), 4, '0'), '-',
+            LPAD(TO_HEX(((RANDOM() * 65535)::INT | 32768) & 49151), 4, '0'), '-',
+            LPAD(TO_HEX((RANDOM() * 65535)::INT), 4, '0'),
+            LPAD(TO_HEX((RANDOM() * 65535)::INT), 4, '0'),
+            LPAD(TO_HEX((RANDOM() * 65535)::INT), 4, '0')
+        ))
+    ),
     test_suite_name VARCHAR(255) NOT NULL,
-    project_id UUID NOT NULL REFERENCES projects(id) ON DELETE CASCADE,
+    project_id VARCHAR(36) NOT NULL REFERENCES projects(id) ON DELETE CASCADE,
     start_date DATE,
     end_date DATE,
-    bug_id UUID REFERENCES defects(id),
+    bug_id VARCHAR(36) REFERENCES defects(id),
     executed_by VARCHAR(255),
     executed_date VARCHAR(50),
-    assigned_to_user_id UUID REFERENCES users(id),
+    assigned_to_user_id VARCHAR(36) REFERENCES users(id),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 -- Test Case Executions table
 CREATE TABLE test_case_executions (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id VARCHAR(36) PRIMARY KEY DEFAULT (
+        UPPER(CONCAT(
+            LPAD(TO_HEX((RANDOM() * 65535)::INT), 4, '0'),
+            LPAD(TO_HEX((RANDOM() * 65535)::INT), 4, '0'), '-',
+            LPAD(TO_HEX((RANDOM() * 65535)::INT), 4, '0'), '-',
+            LPAD(TO_HEX(((RANDOM() * 65535)::INT | 16384) & 20479), 4, '0'), '-',
+            LPAD(TO_HEX(((RANDOM() * 65535)::INT | 32768) & 49151), 4, '0'), '-',
+            LPAD(TO_HEX((RANDOM() * 65535)::INT), 4, '0'),
+            LPAD(TO_HEX((RANDOM() * 65535)::INT), 4, '0'),
+            LPAD(TO_HEX((RANDOM() * 65535)::INT), 4, '0')
+        ))
+    ),
     test_suite_name VARCHAR(255) NOT NULL,
-    project_id UUID NOT NULL REFERENCES projects(id) ON DELETE CASCADE,
+    project_id VARCHAR(36) NOT NULL REFERENCES projects(id) ON DELETE CASCADE,
     status VARCHAR(20) CHECK (status IN ('Passed', 'Failed', 'Blocked', 'In Progress')) DEFAULT 'In Progress',
     start_date DATE,
     end_date DATE,
-    bug_id UUID REFERENCES defects(id),
+    bug_id VARCHAR(36) REFERENCES defects(id),
     executed_by VARCHAR(255),
     executed_date VARCHAR(50),
-    assigned_to_user_id UUID REFERENCES users(id),
+    assigned_to_user_id VARCHAR(36) REFERENCES users(id),
     remarks TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -145,10 +231,21 @@ CREATE TABLE test_case_executions (
 
 -- Reports table
 CREATE TABLE reports (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id VARCHAR(36) PRIMARY KEY DEFAULT (
+        UPPER(CONCAT(
+            LPAD(TO_HEX((RANDOM() * 65535)::INT), 4, '0'),
+            LPAD(TO_HEX((RANDOM() * 65535)::INT), 4, '0'), '-',
+            LPAD(TO_HEX((RANDOM() * 65535)::INT), 4, '0'), '-',
+            LPAD(TO_HEX(((RANDOM() * 65535)::INT | 16384) & 20479), 4, '0'), '-',
+            LPAD(TO_HEX(((RANDOM() * 65535)::INT | 32768) & 49151), 4, '0'), '-',
+            LPAD(TO_HEX((RANDOM() * 65535)::INT), 4, '0'),
+            LPAD(TO_HEX((RANDOM() * 65535)::INT), 4, '0'),
+            LPAD(TO_HEX((RANDOM() * 65535)::INT), 4, '0')
+        ))
+    ),
     report_name VARCHAR(255) NOT NULL,
     report_type VARCHAR(100) NOT NULL,
-    generated_by_user_id UUID NOT NULL REFERENCES users(id),
+    generated_by_user_id VARCHAR(36) NOT NULL REFERENCES users(id),
     generation_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     link_to_file VARCHAR(500),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -157,25 +254,58 @@ CREATE TABLE reports (
 
 -- Junction table for Test Suites and Test Cases (many-to-many)
 CREATE TABLE test_suite_test_cases (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    test_suite_id UUID NOT NULL REFERENCES test_suites(id) ON DELETE CASCADE,
-    test_case_id UUID NOT NULL REFERENCES test_cases(id) ON DELETE CASCADE,
+    id VARCHAR(36) PRIMARY KEY DEFAULT (
+        UPPER(CONCAT(
+            LPAD(TO_HEX((RANDOM() * 65535)::INT), 4, '0'),
+            LPAD(TO_HEX((RANDOM() * 65535)::INT), 4, '0'), '-',
+            LPAD(TO_HEX((RANDOM() * 65535)::INT), 4, '0'), '-',
+            LPAD(TO_HEX(((RANDOM() * 65535)::INT | 16384) & 20479), 4, '0'), '-',
+            LPAD(TO_HEX(((RANDOM() * 65535)::INT | 32768) & 49151), 4, '0'), '-',
+            LPAD(TO_HEX((RANDOM() * 65535)::INT), 4, '0'),
+            LPAD(TO_HEX((RANDOM() * 65535)::INT), 4, '0'),
+            LPAD(TO_HEX((RANDOM() * 65535)::INT), 4, '0')
+        ))
+    ),
+    test_suite_id VARCHAR(36) NOT NULL REFERENCES test_suites(id) ON DELETE CASCADE,
+    test_case_id VARCHAR(36) NOT NULL REFERENCES test_cases(id) ON DELETE CASCADE,
     UNIQUE(test_suite_id, test_case_id)
 );
 
 -- Junction table for Test Case Executions and Test Cases (many-to-many)
 CREATE TABLE test_case_execution_test_cases (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    test_case_execution_id UUID NOT NULL REFERENCES test_case_executions(id) ON DELETE CASCADE,
-    test_case_id UUID NOT NULL REFERENCES test_cases(id) ON DELETE CASCADE,
+    id VARCHAR(36) PRIMARY KEY DEFAULT (
+        UPPER(CONCAT(
+            LPAD(TO_HEX((RANDOM() * 65535)::INT), 4, '0'),
+            LPAD(TO_HEX((RANDOM() * 65535)::INT), 4, '0'), '-',
+            LPAD(TO_HEX((RANDOM() * 65535)::INT), 4, '0'), '-',
+            LPAD(TO_HEX(((RANDOM() * 65535)::INT | 16384) & 20479), 4, '0'), '-',
+            LPAD(TO_HEX(((RANDOM() * 65535)::INT | 32768) & 49151), 4, '0'), '-',
+            LPAD(TO_HEX((RANDOM() * 65535)::INT), 4, '0'),
+            LPAD(TO_HEX((RANDOM() * 65535)::INT), 4, '0'),
+            LPAD(TO_HEX((RANDOM() * 65535)::INT), 4, '0')
+        ))
+    ),
+    test_case_execution_id VARCHAR(36) NOT NULL REFERENCES test_case_executions(id) ON DELETE CASCADE,
+    test_case_id VARCHAR(36) NOT NULL REFERENCES test_cases(id) ON DELETE CASCADE,
     UNIQUE(test_case_execution_id, test_case_id)
 );
 
 -- Junction table for Test Cases and Defects (many-to-many)
 CREATE TABLE test_case_defects (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    test_case_id UUID NOT NULL REFERENCES test_cases(id) ON DELETE CASCADE,
-    defect_id UUID NOT NULL REFERENCES defects(id) ON DELETE CASCADE,
+    id VARCHAR(36) PRIMARY KEY DEFAULT (
+        UPPER(CONCAT(
+            LPAD(TO_HEX((RANDOM() * 65535)::INT), 4, '0'),
+            LPAD(TO_HEX((RANDOM() * 65535)::INT), 4, '0'), '-',
+            LPAD(TO_HEX((RANDOM() * 65535)::INT), 4, '0'), '-',
+            LPAD(TO_HEX(((RANDOM() * 65535)::INT | 16384) & 20479), 4, '0'), '-',
+            LPAD(TO_HEX(((RANDOM() * 65535)::INT | 32768) & 49151), 4, '0'), '-',
+            LPAD(TO_HEX((RANDOM() * 65535)::INT), 4, '0'),
+            LPAD(TO_HEX((RANDOM() * 65535)::INT), 4, '0'),
+            LPAD(TO_HEX((RANDOM() * 65535)::INT), 4, '0')
+        ))
+    ),
+    test_case_id VARCHAR(36) NOT NULL REFERENCES test_cases(id) ON DELETE CASCADE,
+    defect_id VARCHAR(36) NOT NULL REFERENCES defects(id) ON DELETE CASCADE,
     UNIQUE(test_case_id, defect_id)
 );
 
