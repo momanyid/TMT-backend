@@ -32,4 +32,8 @@ router.get('/health', (req, res) => {
   });
 });
 
+router.get('/', (req, res) => {
+  res.status(200).send("TMT is working");
+})
+
 module.exports = router;
