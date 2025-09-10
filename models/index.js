@@ -60,14 +60,15 @@ const setupAssociations = () => {
   // Many-to-many associations
   TestCase.belongsToMany(TestSuite, { 
     through: 'test_suite_test_cases', 
-    foreignKey: 'testCaseId',
-    otherKey: 'testSuiteId',
-    as: 'testSuites' 
+    foreignKey: 'test_case_id',
+    otherKey: 'test_suite_id',
+    as: 'testSuites'
   });
+
   TestCase.belongsToMany(TestCaseExecution, { 
     through: 'test_case_execution_test_cases', 
-    foreignKey: 'testCaseId',
-    otherKey: 'testCaseExecutionId',
+    foreignKey: 'test_case_id',
+    otherKey: 'test_case_execution_id',
     as: 'testCaseExecutions' 
   });
 
@@ -84,8 +85,8 @@ const setupAssociations = () => {
   TestSuite.belongsTo(User, { foreignKey: 'assignedToUserId', as: 'assignee' });
   TestSuite.belongsToMany(TestCase, { 
     through: 'test_suite_test_cases', 
-    foreignKey: 'testSuiteId',
-    otherKey: 'testCaseId',
+    foreignKey: 'test_suite_id',
+    otherKey: 'test_case_id',
     as: 'testCases' 
   });
 
@@ -95,8 +96,8 @@ const setupAssociations = () => {
   TestCaseExecution.belongsTo(User, { foreignKey: 'assignedToUserId', as: 'assignee' });
   TestCaseExecution.belongsToMany(TestCase, { 
     through: 'test_case_execution_test_cases', 
-    foreignKey: 'testCaseExecutionId',
-    otherKey: 'testCaseId',
+    foreignKey: 'test_case_execution_id',
+    otherKey: 'test_case_id',
     as: 'testCases' 
   });
 

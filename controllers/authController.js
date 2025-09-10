@@ -11,7 +11,7 @@ const { User } = require("../models/index.js");
 const { Op } = require("sequelize");
 
 const signup = async (req, res) => {
-	const { email, password, username, phoneNumber, firstName, lastName } = req.body;
+	const { email, password, username, phoneNumber, firstName, lastName, role } = req.body;
 
 	try {
 		if (!email || !password || !username || !firstName || !lastName) {
@@ -38,6 +38,7 @@ const signup = async (req, res) => {
 			phoneNumber,
 			firstName,
 			lastName,
+			role,
 			verificationToken,
 			verificationTokenExpiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000), // 24 hours
 		});
@@ -124,7 +125,7 @@ const login = async (req, res) => {
 			return res.status(400).json({ success: false, message: "Invalid credentials" });
 		}
 
-		generateTokenAndSetCookie(res, user.id);
+		generateTokenAndSetCookie(res, user.id, user.role);
 
 		await user.update({ lastLogin: new Date() });
 

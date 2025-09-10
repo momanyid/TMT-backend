@@ -96,6 +96,15 @@ const createDefect = asyncHandler(async (req, res) => {
     res.status(404);
     throw new Error('Test case not found');
   }
+
+  let assigneeId = null;
+
+  if (assignedToUserId) {
+    const assignee = await User.findByPk(assignedToUserId);
+    if (assignee) {
+      assigneeId = assignedToUserId;
+    }
+  }
   
   const defect = await Defect.create({
     testCaseId,
@@ -109,7 +118,7 @@ const createDefect = asyncHandler(async (req, res) => {
     actualResult,
     attachments,
     environment,
-    assignedToUserId,
+    assignedToUserId: assigneeId,
     reportedByUserId: req.user.id,
     dateReported: new Date(),
     remarks

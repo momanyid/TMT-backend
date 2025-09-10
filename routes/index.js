@@ -21,7 +21,7 @@ router.use('/requirements', requirementRoutes);
 router.use('/testcases', testCaseRoutes);
 router.use('/defects', defectRoutes);
 router.use('/testsuites', testSuiteRoutes);
-router.use('/testcaseexecutions', testCaseExecutionRoutes);
+router.use('/testcase-executions', testCaseExecutionRoutes);
 
 
 // Health check route

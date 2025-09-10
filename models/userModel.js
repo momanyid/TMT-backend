@@ -9,7 +9,7 @@ module.exports = (sequelize) => {
     email: { type: DataTypes.STRING, allowNull: false, unique: true, validate: { isEmail: true } },
     password: { type: DataTypes.STRING, allowNull: false },
     phoneNumber: { type: DataTypes.STRING(20), field: 'phone_number' },
-    role: { type: DataTypes.ENUM('Tester', 'Lead', 'Admin', 'QA', 'Developer'), defaultValue: 'Tester' },
+    role: { type: DataTypes.ENUM('Tester', 'QA Lead', 'Admin', 'QA', 'Developer'), defaultValue: 'Tester' },
     isVerified: { type: DataTypes.BOOLEAN, defaultValue: false, field: 'is_verified' },
     resetPasswordToken: { type: DataTypes.STRING, field: 'reset_password_token' },
     resetPasswordExpiresAt: { type: DataTypes.DATE, field: 'reset_password_expires_at' },
