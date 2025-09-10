@@ -6,7 +6,7 @@ const {
   createTestPlan,
   updateTestPlan,
   deleteTestPlan,
-} = require('../controllers/testPlanController');
+} = require('../controllers/testplanController.js');
 const { verifyToken } = require('../middleware/verifyToken');
 
 // All routes are protected - require authentication
