@@ -1,0 +1,21 @@
+name: sync the repo
+
+on:
+  push:
+    branches:
+      -main
+
+jobs:
+  sync:
+    runs-on: ubuntu:latest
+    steps:
+      - name: checkout the other repo
+        uses: actions/checkout@v3
+
+      - name: Push to the repo
+        run: |
+          git config user.name "David Momanyi"
+          git config user.username "momanyid"
+          git config user.email "ddavidmmomanyi8818@gmail.com"
+          git remote add mirror https://x-access-token:${{ secrets.REPO_B_TOKEN }}@github.com:momanyid/TMT-backend
+          git push mirror main --force
