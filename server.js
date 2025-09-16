@@ -29,6 +29,7 @@ app.get('/', (req, res) => {
   try {
     await sequelize.authenticate();
     console.log('✅ Database connection established successfully.');
+    await sequelize.sync({ alter: true});
 
     app.listen(PORT, () => {
       console.log(`Server running on port ${PORT} in ${NODE_ENV} mode`);
