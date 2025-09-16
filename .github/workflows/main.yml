@@ -7,7 +7,7 @@ on:
 
 jobs:
   sync:
-    runs-on: ubuntu:latest
+    runs-on: ubuntu-latest
     steps:
       - name: checkout the other repo
         uses: actions/checkout@v3

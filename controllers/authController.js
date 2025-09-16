@@ -65,7 +65,7 @@ const signup = async (req, res) => {
 			},
 		});
 	} catch (error) {
-		res.status(400).json({ success: false, message: error.message });
+		res.status(400).json({ success: false, message: error.message + "The error comes from here" });
 	}
 };
 
