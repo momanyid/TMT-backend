@@ -18,10 +18,13 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.use(cors({
-  origin: "*",
-  credentials: false,
+  origin: (origin, callback) => {
+    // Reflect the origin back if it exists
+    callback(null, origin || true);
+  },
+  credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'Accept']
+  allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
 }));
 
 //routes
