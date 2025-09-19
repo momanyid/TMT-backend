@@ -22,6 +22,8 @@ const Defect = require('./defectModel')(sequelize);
 const TestSuite = require('./testSuiteModel')(sequelize);
 const TestCaseExecution = require('./TestcaseExecutionModel')(sequelize);
 const Report = require('./reportModel')(sequelize);
+const TestSuiteTestCases = require('./testSuiteTestCaseModel')(sequelize);
+const TestCaseExecutionTestCases = require('./testCaseExecutionTestCasesModel')(sequelize);
 
 // Define associations
 const setupAssociations = () => {
@@ -59,14 +61,14 @@ const setupAssociations = () => {
   
   // Many-to-many associations
   TestCase.belongsToMany(TestSuite, { 
-    through: 'test_suite_test_cases', 
+    through: TestSuiteTestCases, 
     foreignKey: 'test_case_id',
     otherKey: 'test_suite_id',
     as: 'testSuites'
   });
 
   TestCase.belongsToMany(TestCaseExecution, { 
-    through: 'test_case_execution_test_cases', 
+    through: TestCaseExecutionTestCases, 
     foreignKey: 'test_case_id',
     otherKey: 'test_case_execution_id',
     as: 'testCaseExecutions' 
@@ -84,7 +86,7 @@ const setupAssociations = () => {
   TestSuite.belongsTo(Defect, { foreignKey: 'bugId', as: 'bug' });
   TestSuite.belongsTo(User, { foreignKey: 'assignedToUserId', as: 'assignee' });
   TestSuite.belongsToMany(TestCase, { 
-    through: 'test_suite_test_cases', 
+    through: TestSuiteTestCases, 
     foreignKey: 'test_suite_id',
     otherKey: 'test_case_id',
     as: 'testCases' 
@@ -95,7 +97,7 @@ const setupAssociations = () => {
   TestCaseExecution.belongsTo(Defect, { foreignKey: 'bugId', as: 'bug' });
   TestCaseExecution.belongsTo(User, { foreignKey: 'assignedToUserId', as: 'assignee' });
   TestCaseExecution.belongsToMany(TestCase, { 
-    through: 'test_case_execution_test_cases', 
+    through: TestCaseExecutionTestCases, 
     foreignKey: 'test_case_execution_id',
     otherKey: 'test_case_id',
     as: 'testCases' 
@@ -118,5 +120,6 @@ module.exports = {
   Defect,
   TestSuite,
   TestCaseExecution,
+  TestCaseExecutionTestCases,
   Report,
 };

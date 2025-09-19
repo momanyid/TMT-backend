@@ -221,7 +221,7 @@ const resetPassword = async (req, res) => {
 
 const checkAuth = async (req, res) => {
 	try {
-		const user = await User.findByPk(req.userId, {
+		const user = await User.findByPk(req.user.id, {
 			attributes: { exclude: ['password'] }
 		});
 		if (!user) {
