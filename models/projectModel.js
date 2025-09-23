@@ -6,7 +6,7 @@ module.exports = (sequelize) => {
     projectName: { type: DataTypes.STRING, allowNull: false, field: 'project_name' },
     description: { type: DataTypes.STRING },
     projectStatus: { type: DataTypes.STRING, field: "status"},
-    teamsize: { type: DataTypes.NUMBER, field: 'team_size'},
+    teamSize: { type: DataTypes.NUMBER, field: 'team_size'},
     startDate: { type: DataTypes.DATEONLY, field: 'start_date' },
     endDate: { type: DataTypes.DATEONLY, field: 'end_date' }
   },
