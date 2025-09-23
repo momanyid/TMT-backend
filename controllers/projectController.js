@@ -3,15 +3,12 @@ const { Project, TestPlan } = require('../models/index.js');
 // Create a new project
 exports.createProject = async (req, res) => {
   try {
-    const { projectName, startDate, endDate } = req.body;
+    const { projectName, description, projectStatus, teamsize, startDate, endDate } = req.body;
     if (!projectName) {
       return res.status(400).json({ message: 'Project name is required' });
     }
-    const project = await Project.create({ 
-      projectName, 
-      startDate, 
-      endDate 
-    });
+    const project = await Project.create({ projectName, description, projectStatus, teamsize, startDate, endDate });
+
     res.status(201).json(project);
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -54,12 +51,12 @@ exports.getProjectById = async (req, res) => {
 // Update a project
 exports.updateProject = async (req, res) => {
   try {
-    const { projectName, startDate, endDate } = req.body;
+    const { projectName, description, projectStatus, teamsize, startDate, endDate } = req.body;
     const project = await Project.findByPk(req.params.id);
     
     if (!project) return res.status(404).json({ message: 'Project not found' });
     
-    await project.update({ projectName, startDate, endDate });
+    await project.update({ projectName, description, projectStatus, teamsize, startDate, endDate });
     
     const updatedProject = await Project.findByPk(req.params.id, {
       include: [{

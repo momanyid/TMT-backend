@@ -4,6 +4,9 @@ module.exports = (sequelize) => {
   const Project = sequelize.define('Project', {
     id: { type: DataTypes.UUID, defaultValue: DataTypes.UUIDV4, primaryKey: true },
     projectName: { type: DataTypes.STRING, allowNull: false, field: 'project_name' },
+    description: { type: DataTypes.STRING },
+    projectStatus: { type: DataTypes.STRING, field: "status"},
+    teamsize: { type: DataTypes.NUMBER, field: 'team_size'},
     startDate: { type: DataTypes.DATEONLY, field: 'start_date' },
     endDate: { type: DataTypes.DATEONLY, field: 'end_date' }
   },
